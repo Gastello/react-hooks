@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import { useState } from "react";
 
-function App() {
+const App = () => {
+  const [state, setState] = useState({ isAdmin: false, userName: "Olga" });
+  const { isAdmin, userName } = state;
+  const assignAdmin = () => {
+    setState({ ...state, isAdmin: true });
+  };
+  const assignUser = () => {
+    setState({ ...state, isAdmin: false });
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Hello, {isAdmin ? "Admin" : "User"}</h1>
+      {isAdmin ? (
+        <button onClick={assignUser}>Become an user!</button>
+      ) : (
+        <button onClick={assignAdmin}>Become an admin!</button>
+      )}
     </div>
   );
-}
+};
 
 export default App;
