@@ -85,11 +85,10 @@ const authorData = {
 };
 const AuthorDataContext = createContext(authorData);
 
-const UseContext = () => {
-  const { authorName, authorLogin } = authorData;
+const UseContext = () => { 
   return (
     <div>
-      <h1>UseContext</h1>
+      <h1>UseContext</h1> 
       <AuthorDataContext.Provider value={authorData}>
         <UseContextPart />
       </AuthorDataContext.Provider>
