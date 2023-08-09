@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { useState, FC } from "react";
@@ -34,6 +34,24 @@ const UseEffect = () => {
     onCount: () => void;
   };
   const Counter: FC<CounterProps> = (props) => {
+
+    // calls when component mounted or updated
+    useEffect(()=>{
+      console.log('Counter has been changed!');
+    });
+    
+    // calls when component mounted or removed
+    useEffect(()=>{
+      return () => {
+        console.log('Counter has been removed!');
+      }
+    }, []);
+
+    // calls when component mounted or onCount
+    useEffect(()=>{
+      console.log('Counter has been mount or onCount changed!');
+    }, [props.onCount]);
+
     return (
       <button onClick={props.onCount}>Clicked {props.counter} times</button>
     );
