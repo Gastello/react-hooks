@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import { useState, FC } from "react";
+import { useState, FC, createContext } from "react";
 
 const UseState = () => {
   const [state, setState] = useState({ isAdmin: false, userName: "Olga" });
@@ -34,22 +34,21 @@ const UseEffect = () => {
     onCount: () => void;
   };
   const Counter: FC<CounterProps> = (props) => {
-
     // calls when component mounted or updated
-    useEffect(()=>{
-      console.log('Counter has been changed!');
+    useEffect(() => {
+      console.log("Counter has been changed!");
     });
-    
+
     // calls when component mounted or removed
-    useEffect(()=>{
+    useEffect(() => {
       return () => {
-        console.log('Counter has been removed!');
-      }
+        console.log("Counter has been removed!");
+      };
     }, []);
 
     // calls when component mounted or onCount
-    useEffect(()=>{
-      console.log('Counter has been mount or onCount changed!');
+    useEffect(() => {
+      console.log("Counter has been mount or onCount changed!");
     }, [props.onCount]);
 
     return (
@@ -65,21 +64,45 @@ const UseEffect = () => {
   };
   const hideCounter = () => {
     toggleCounter(false);
-  }
+  };
   return (
     <div>
       <h1>UseEffect</h1>
-      {counterExists && <Counter counter={counter} onCount={incrementCounter} />}
+      {counterExists && (
+        <Counter counter={counter} onCount={incrementCounter} />
+      )}
       <div>
-        <button onClick={resetCounter}>
-          Reset counter
-        </button>
-        <button onClick={hideCounter}>
-          Delete Counter
-        </button>
+        <button onClick={resetCounter}>Reset counter</button>
+        <button onClick={hideCounter}>Delete Counter</button>
       </div>
     </div>
   );
+};
+
+const authorData = {
+  authorName: "Maksym",
+  authorLogin: "Gastello",
+};
+const AuthorDataContext = createContext(authorData);
+
+const UseContext = () => {
+  const { authorName, authorLogin } = authorData;
+  return (
+    <div>
+      <h1>UseContext</h1>
+      <AuthorDataContext.Provider value={authorData}>
+        <UseContextPart />
+      </AuthorDataContext.Provider>
+      <hr />
+    </div>
+  );
+};
+const UseContextPart = () => {
+  const {authorName, authorLogin} = useContext(AuthorDataContext);
+  return <div>
+    <div>Name: {authorName}</div>
+    <div>Login: {authorLogin}</div>
+  </div>;
 };
 
 const App = () => {
@@ -90,6 +113,7 @@ const App = () => {
       <hr />
       <UseEffect />
       <hr />
+      <UseContext/>
     </div>
   );
 };
