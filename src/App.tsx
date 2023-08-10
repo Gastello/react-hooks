@@ -36,11 +36,11 @@ const DataTransfer = () => {
   };
   return (
     <div>
-      <h1>Sharing data between components</h1>
-      <h2>Each button has its own count state:</h2>
+      <h2>Sharing data between components</h2>
+      <h3>Each button has its own count state:</h3>
       <IndependentBtn />
       <IndependentBtn />
-      <h2>Buttons have the same parent with count state:</h2>
+      <h3>Buttons have the same parent with count state:</h3>
       <SharedDataBtns />
     </div>
   );
@@ -59,6 +59,7 @@ const UseState = () => {
   return (
     <div>
       <h1>useState</h1>
+      <DataTransfer />
       <h2>Hello, {isAdmin ? "Admin" : "User"}</h2>
       {isAdmin ? (
         <button onClick={assignUser}>Become an user!</button>
@@ -152,9 +153,7 @@ const UseContextPart = () => {
 const App = () => {
   return (
     <div className="App">
-      <hr />
-      <DataTransfer />
-      <hr />
+      <hr /> 
       <UseState />
       <hr />
       <UseEffect />
