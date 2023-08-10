@@ -3,6 +3,49 @@ import logo from "./logo.svg";
 import "./App.css";
 import { useState, FC, createContext } from "react";
 
+const DataTransfer = () => {
+  const IndependentBtn = () => {
+    const [count, setCount] = useState(0);
+    return (
+      <button
+        onClick={() => {
+          setCount(count + 1);
+        }}
+      >
+        {count} clicked
+      </button>
+    );
+  };
+  const SharedDataBtns = () => {
+    const [count, setCount] = useState(0);
+
+    const SharedDataBtn = () => {
+      return (
+        <button onClick={() => {setCount(count + 1);}}>
+          {count} clicked
+        </button>
+      );
+    };
+
+    return (
+      <>
+        <SharedDataBtn />
+        <SharedDataBtn />
+      </>
+    );
+  };
+  return (
+    <div>
+      <h1>Sharing data between components</h1>
+      <h2>Each button has its own count state:</h2>
+      <IndependentBtn />
+      <IndependentBtn />
+      <h2>Buttons have the same parent with count state:</h2>
+      <SharedDataBtns />
+    </div>
+  );
+};
+
 const UseState = () => {
   const [state, setState] = useState({ isAdmin: false, userName: "Olga" });
   const { isAdmin, userName } = state;
@@ -85,10 +128,10 @@ const authorData = {
 };
 const AuthorDataContext = createContext(authorData);
 
-const UseContext = () => { 
+const UseContext = () => {
   return (
     <div>
-      <h1>UseContext</h1> 
+      <h1>UseContext</h1>
       <AuthorDataContext.Provider value={authorData}>
         <UseContextPart />
       </AuthorDataContext.Provider>
@@ -97,22 +140,26 @@ const UseContext = () => {
   );
 };
 const UseContextPart = () => {
-  const {authorName, authorLogin} = useContext(AuthorDataContext);
-  return <div>
-    <div>Name: {authorName}</div>
-    <div>Login: {authorLogin}</div>
-  </div>;
+  const { authorName, authorLogin } = useContext(AuthorDataContext);
+  return (
+    <div>
+      <div>Name: {authorName}</div>
+      <div>Login: {authorLogin}</div>
+    </div>
+  );
 };
 
 const App = () => {
   return (
     <div className="App">
       <hr />
+      <DataTransfer />
+      <hr />
       <UseState />
       <hr />
       <UseEffect />
       <hr />
-      <UseContext/>
+      <UseContext />
     </div>
   );
 };
