@@ -133,7 +133,7 @@ const authorData = {
 };
 const useContextStyle={
   padding: 20,
-  border: "1px black solid",
+  border: "5px grey dashed",
 }
 const AuthorDataContext = createContext(authorData);
 
