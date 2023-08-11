@@ -21,7 +21,11 @@ const DataTransfer = () => {
 
     const SharedDataBtn = () => {
       return (
-        <button onClick={() => {setCount(count + 1);}}>
+        <button
+          onClick={() => {
+            setCount(count + 1);
+          }}
+        >
           {count} clicked
         </button>
       );
@@ -127,23 +131,61 @@ const authorData = {
   authorName: "Maksym",
   authorLogin: "Gastello",
 };
+const useContextStyle={
+  padding: 20,
+  border: "1px black solid",
+}
 const AuthorDataContext = createContext(authorData);
 
 const UseContext = () => {
+  const [state, setState] = useState({
+    authorName: "Maksym",
+    authorLogin: "Gastello",
+  });
   return (
-    <div>
+    <div
+      style={useContextStyle}
+    >
+      <i>parent:</i>
       <h1>UseContext</h1>
-      <AuthorDataContext.Provider value={authorData}>
-        <UseContextPart />
+      <button
+        onClick={() => {
+          state.authorName == "Maksym"
+            ? setState({
+                authorName: "John",
+                authorLogin: "Cena",
+              })
+            : setState({
+                authorName: "Maksym",
+                authorLogin: "Gastello",
+              });
+        }}
+      >
+        Change state in child of child, without passing props
+      </button>
+      <AuthorDataContext.Provider value={state}>
+        <UseContextChild />
       </AuthorDataContext.Provider>
-      <hr />
     </div>
   );
 };
-const UseContextPart = () => {
+const UseContextChild = () => {
+  return (
+    <div
+      style={useContextStyle}
+    >
+      <i>child:</i>
+      <UseContextChildOfChild />
+    </div>
+  );
+};
+const UseContextChildOfChild = () => {
   const { authorName, authorLogin } = useContext(AuthorDataContext);
   return (
-    <div>
+    <div
+      style={useContextStyle}
+    >
+      <i>child of child:</i>
       <div>Name: {authorName}</div>
       <div>Login: {authorLogin}</div>
     </div>
@@ -153,12 +195,13 @@ const UseContextPart = () => {
 const App = () => {
   return (
     <div className="App">
-      <hr /> 
+      <hr />
       <UseState />
       <hr />
       <UseEffect />
       <hr />
       <UseContext />
+      <hr />
     </div>
   );
 };
