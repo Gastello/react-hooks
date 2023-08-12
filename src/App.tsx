@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useCallback, useContext, useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { useState, FC, createContext } from "react";
@@ -131,10 +131,10 @@ const authorData = {
   authorName: "Maksym",
   authorLogin: "Gastello",
 };
-const useContextStyle={
+const useContextStyle = {
   padding: 20,
   border: "5px grey dashed",
-}
+};
 const AuthorDataContext = createContext(authorData);
 
 const UseContext = () => {
@@ -143,9 +143,7 @@ const UseContext = () => {
     authorLogin: "Gastello",
   });
   return (
-    <div
-      style={useContextStyle}
-    >
+    <div style={useContextStyle}>
       <i>parent:</i>
       <h1>UseContext</h1>
       <button
@@ -171,9 +169,7 @@ const UseContext = () => {
 };
 const UseContextChild = () => {
   return (
-    <div
-      style={useContextStyle}
-    >
+    <div style={useContextStyle}>
       <i>child:</i>
       <UseContextChildOfChild />
     </div>
@@ -182,9 +178,7 @@ const UseContextChild = () => {
 const UseContextChildOfChild = () => {
   const { authorName, authorLogin } = useContext(AuthorDataContext);
   return (
-    <div
-      style={useContextStyle}
-    >
+    <div style={useContextStyle}>
       <i>child of child:</i>
       <div>Name: {authorName}</div>
       <div>Login: {authorLogin}</div>
@@ -192,6 +186,54 @@ const UseContextChildOfChild = () => {
   );
 };
 
+type ExpensiveProps = {
+  callback: () => void;
+};
+class Expensive extends React.PureComponent<ExpensiveProps> {
+  render() {
+    let i = 0;
+    while (i < 1000000000) i++;
+    return <button onClick={this.props.callback}>Expensive</button>;
+  }
+}
+
+const UseCallback = () => {
+  const [counter, setCounter] = useState(0);
+
+  const increment = () => {
+    setCounter(counter + 1);
+  };
+
+  const callback = useCallback(() => {
+    console.log("callback");
+  }, []);
+
+  return (
+    <div>
+      <h1>UseCallback</h1>
+      <Expensive callback={callback} />
+      <button onClick={increment}>Increment: {counter}</button>
+    </div>
+  );
+};
+
+const useCounter = () => {
+  const [counter, setCounter] = useState(0);
+  const increment = () => setCounter(counter + 1);
+  return {
+    counter,
+    increment,
+  };
+};
+const UseCustomHook = () => {
+  const { counter, increment } = useCounter();
+  return (
+    <div>
+      <h1>Custom Hooks</h1>
+      <button onClick={() => increment()}>Counted {counter} times</button>
+    </div>
+  );
+};
 const App = () => {
   return (
     <div className="App">
@@ -201,6 +243,10 @@ const App = () => {
       <UseEffect />
       <hr />
       <UseContext />
+      <hr />
+      <UseCallback />
+      <hr />
+      <UseCustomHook />
       <hr />
     </div>
   );
